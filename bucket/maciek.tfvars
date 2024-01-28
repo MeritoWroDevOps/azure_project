@@ -1,2 +1,2 @@
-name="maciektf"
-location="West Europe"
+name     = "maciektf"
+location = "West Europe"

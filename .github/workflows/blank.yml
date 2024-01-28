@@ -25,10 +25,25 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - uses: azure/docker-login@v1
+        with:
+          login-server: ${{ vars.REGISTRY_SERVER_URL }}
+          username: ${{ vars.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: list files
-        run: ls -la
+      - name: push rabitmq
+        run: |
+          docker pull rabbitmq:3.11.17-management-alpine
+          docker tag rabbitmq:3.11.17-management-alpine ${{ vars.REGISTRY_SERVER_URL }}/rabbitmq:latest
+          docker push ${{ vars.REGISTRY_SERVER_URL }}/rabbitmq:latest
+      
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -recursive -check
+        # continue-on-error: true
+        
+
+      
 

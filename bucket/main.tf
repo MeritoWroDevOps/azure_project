@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "example" {
   name     = "${var.name}-resources"
-  location =  var.location
+  location = var.location
 }
 
 resource "azurerm_storage_account" "example" {
