@@ -16,3 +16,18 @@ resource "azurerm_storage_container" "example" {
   storage_account_name  = azurerm_storage_account.example.name
   container_access_type = "private"
 }
+
+
+
+data "azuread_client_config" "current" {}
+
+resource "azuread_application" "example" {
+  display_name = "${var.name}-sp"
+  owners       = [data.azuread_client_config.current.object_id]
+}
+
+resource "azuread_service_principal" "example" {
+  client_id                    = azuread_application.example.client_id
+  app_role_assignment_required = false
+  owners                       = [data.azuread_client_config.current.object_id]
+}
