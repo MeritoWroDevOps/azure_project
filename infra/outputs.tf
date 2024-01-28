@@ -9,3 +9,14 @@ output "kube_config" {
 
   sensitive = true
 }
+
+output "acr_admin_username" {
+  value = azurerm_container_registry.example.admin_username
+
+  sensitive = false
+}
+output "acr_admin_password" {
+  value = azurerm_container_registry.example.admin_password
+
+  sensitive = true
+}
